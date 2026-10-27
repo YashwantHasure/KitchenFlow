@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KitchenFlow | Cloud Kitchen Operations</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand"><span class="brand-mark">K</span><div><b>KitchenFlow</b><small>Kitchen Operations</small></div></div>
+    <div class="nav-label">WORKSPACE</div>
+    <button class="nav active" data-view="dashboard">▦ <span>Dashboard</span></button>
+    <button class="nav" data-view="orders">▤ <span>All Orders</span></button>
+    <button class="nav" data-view="tickets">▣ <span>Kitchen Tickets</span></button>
+    <div class="sidebar-note"><b>DEMO ENVIRONMENT</b><p>All orders and customer details are fictional sample data.</p></div>
+    <div class="sidebar-bottom"><span class="avatar">YK</span><div><b>Kitchen Manager</b><small>Demo account</small></div></div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div><div class="eyebrow">OPERATIONS / <span id="breadcrumb">DASHBOARD</span></div><h1 id="pageTitle">Kitchen dashboard</h1></div>
+      <div class="top-actions"><span class="demo-pill"><i></i> Demo data</span><button class="btn btn-primary" id="newOrderBtn">＋ New order</button></div>
+    </header>
+
+    <section class="banner">
+      <div><span class="banner-label">LIVE SIMULATION</span><h2>Every order, in the right sequence.</h2><p>Track incoming orders, estimate preparation slots, and generate consistent kitchen tickets.</p></div>
+      <div class="banner-icon">⌁</div>
+    </section>
+
+    <section class="stats">
+      <article class="stat-card"><div class="stat-top"><span>Active orders</span><span class="stat-icon purple">▤</span></div><strong id="activeCount">0</strong><small>Waiting or in preparation</small></article>
+      <article class="stat-card"><div class="stat-top"><span>Next pickup</span><span class="stat-icon orange">◷</span></div><strong id="nextPickup">--:--</strong><small>Earliest active order</small></article>
+      <article class="stat-card"><div class="stat-top"><span>Queue workload</span><span class="stat-icon blue">⌁</span></div><strong id="queueLoad">0 min</strong><small>Estimated active workload</small></article>
+      <article class="stat-card"><div class="stat-top"><span>Ready for pickup</span><span class="stat-icon green">✓</span></div><strong id="readyCount">0</strong><small>Completed preparation</small></article>
+    </section>
+
+    <section class="content-grid">
+      <article class="panel queue-panel">
+        <div class="panel-heading"><div><h3>Kitchen order queue</h3><p>Orders are scheduled using urgency and available kitchen capacity.</p></div><select id="statusFilter" aria-label="Filter by status"><option value="All">All statuses</option><option>Queued</option><option>Preparing</option><option>Ready</option></select></div>
+        <div class="queue-legend"><span><i class="dot red"></i> Priority</span><span><i class="dot amber"></i> Standard</span><span class="legend-right">Sample orders • local time</span></div>
+        <div id="orderList" class="order-list"></div>
+      </article>
+      <aside class="panel side-panel">
+        <div class="panel-heading"><div><h3>Latest kitchen ticket</h3><p>Formatted for kitchen staff</p></div><span class="ticket-badge">KOT</span></div>
+        <div id="ticket" class="ticket"><div class="ticket-empty">Select an order to preview its ticket.</div></div>
+        <div class="ticket-actions"><button class="btn btn-light" id="copyTicket">Copy ticket</button><button class="btn btn-light" id="printTicket">Print</button></div>
+        <div class="tip"><span>✦</span><div><b>Scheduling note</b><p>This demo assumes one shared preparation station. Production kitchens need station-specific capacity and real-time order integrations.</p></div></div>
+      </aside>
+    </section>
+
+    <section class="panel bottom-panel">
+      <div class="panel-heading"><div><h3>Recent activity</h3><p>Actions taken in this demo session</p></div><button class="btn btn-light btn-small" id="resetDemo">Reset demo data</button></div>
+      <div id="activity" class="activity-list"></div>
+    </section>
+    <footer>KitchenFlow prototype · Fictional sample data · Not connected to delivery platforms</footer>
+  </main>
+
+  <dialog id="orderDialog">
+    <form id="orderForm" class="dialog-form">
+      <div class="dialog-heading"><div><span class="eyebrow">ORDER INTAKE</span><h2>Create a kitchen order</h2></div><button type="button" class="close-btn" id="closeDialog">×</button></div>
+      <label for="orderSource">Order source</label>
+      <select id="orderSource"><option>Swiggy</option><option>Zomato</option><option>Direct Website</option><option>Phone</option></select>
+      <label for="orderRef">Order reference <span>(optional)</span></label>
+      <input id="orderRef" maxlength="24" placeholder="e.g. SW-5108">
+      <label for="priority">Priority</label>
+      <select id="priority"><option value="Standard">Standard</option><option value="High">High priority</option></select>
+      <div class="dish-heading"><b>Dishes and preparation time</b><button type="button" class="text-btn" id="addDish">+ Add dish</button></div>
+      <div id="dishInputs"></div>
+      <p class="form-hint">Preparation time: whole numbers from 1–180 minutes. Five minutes are added for packing.</p>
+      <p id="formError" class="error" role="alert"></p>
+      <div class="dialog-actions"><button type="button" class="btn btn-light" id="cancelDialog">Cancel</button><button type="submit" class="btn btn-primary">Create order</button></div>
+    </form>
+  </dialog>
+  <div id="toast" class="toast" role="status"></div>
+  <script src="app.js"></script>
+</body>
+</html>
